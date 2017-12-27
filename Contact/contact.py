@@ -39,13 +39,41 @@ def print_menu():
     print(a)
     return int(a)
 
+def store_contact(manlist):
+    f = open("contact_db.txt",'wt')
+    for x in manlist:
+        f.write(x.name + '\n')
+        f.write(x.phone + '\n')
+        f.write(x.addr + '\n')
+        f.write(x.email + '\n')
+    f.close()
+
 def delete_contact(manlist, name):
     for i , man in enumerate(manlist):
         if man.name == name:
             del manlist[i]
 
+def load(manlist):
+    f = open("contact_db.txt",'rt')
+    lines = f.readlines()
+    num = len(lines)/4
+    num = int(num)
+    
+    for i in range(0,num):
+        name=lines[4*i].rstrip('\n')
+        phone = lines[4*i+1].rstrip('\n')
+        addr = lines[4*i+2].rstrip('\n')
+        email= lines[4*i+3].rstrip('\n')
+    man = Contact(name,phone,addr,email)
+    manlist.append(man)
+    f.close()
+    
+    
+        
+
 def run():
     manlist = []
+    load(manlist)
     while 1:
         menu=print_menu()
         if menu== 1:
@@ -57,6 +85,7 @@ def run():
             name = input("name : ")
             delete_contact(manlist, name)
         elif menu == 4:
+            store_contact(manlist)
             break
     print(len(manlist))
 
